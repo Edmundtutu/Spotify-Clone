@@ -1,0 +1,160 @@
+/* Track Card Styles */
+:root {
+  --card-bg-color: #181818;
+  --card-hover-bg-color: #282828;
+  --card-text-color: #fff;
+  --card-secondary-text-color: #b3b3b3;
+  --card-border-radius: 8px;
+  --card-padding: 16px;
+  --card-transition: all 0.3s ease;
+  --play-button-bg: #1db954;
+  --play-button-hover-bg: #1ed760;
+}
+
+.track-card {
+  background-color: var(--card-bg-color);
+  border-radius: var(--card-border-radius);
+  padding: var(--card-padding);
+  transition: var(--card-transition);
+  cursor: pointer;
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.track-card:hover {
+  background-color: var(--card-hover-bg-color);
+}
+
+.track-card-image-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%; /* 1:1 Aspect Ratio */
+  margin-bottom: 16px;
+  border-radius: var(--card-border-radius);
+  overflow: hidden;
+}
+
+.track-card-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--card-border-radius);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.track-card-play-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--play-button-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.3s ease;
+  z-index: 2;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.track-card:hover .track-card-play-button {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.track-card-play-button:hover {
+  background-color: var(--play-button-hover-bg);
+  transform: scale(1.05);
+}
+
+.track-card-play-icon {
+  color: #fff;
+  font-size: 24px;
+}
+
+.track-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--card-text-color);
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-card-artist {
+  font-size: 14px;
+  color: var(--card-secondary-text-color);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-card-info {
+  padding: 0 4px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .track-card {
+    padding: 12px;
+  }
+  
+  .track-card-play-button {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .track-card-play-icon {
+    font-size: 20px;
+  }
+  
+  .track-card-title {
+    font-size: 14px;
+  }
+  
+  .track-card-artist {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 576px) {
+  .track-card-play-button {
+    opacity: 1;
+    width: 36px;
+    height: 36px;
+  }
+  
+  .track-card-play-icon {
+    font-size: 18px;
+  }
+}
+
+/* Grid layout support */
+.track-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 992px) {
+  .track-cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .track-cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+}

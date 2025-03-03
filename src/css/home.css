@@ -1,0 +1,133 @@
+/* Home Page Styles */
+:root {
+  --primary-color: #1DB954;
+  --primary-hover: #1ed760;
+  --dark-bg: #121212;
+  --light-text: #FFFFFF;
+  --gray-bg: #282828;
+  --light-gray: #B3B3B3;
+  --border-radius: 4px;
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --transition-speed: 0.3s;
+}
+
+/* Search Form Styles */
+.search-container {
+  margin: 2rem auto;
+  max-width: 800px;
+  padding: 0 1rem;
+}
+
+.search-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.search-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--gray-bg);
+  color: var(--light-text);
+  font-size: 1rem;
+  transition: all var(--transition-speed);
+}
+
+.search-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.search-button {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition-speed);
+}
+
+.search-button:hover {
+  background-color: var(--primary-hover);
+}
+
+/* Track Cards Grid Layout */
+.tracks-container {
+  padding: 0 1rem;
+}
+
+.tracks-heading {
+  margin-bottom: 1.5rem;
+  color: var(--light-text);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.tracks-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+}
+
+/* Responsive Grid Layout */
+@media (min-width: 576px) {
+  .tracks-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .tracks-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .tracks-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .tracks-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  
+  .search-container {
+    max-width: 1000px;
+  }
+}
+
+/* No Results Message */
+.no-results {
+  text-align: center;
+  color: var(--light-gray);
+  margin: 3rem 0;
+  font-size: 1.2rem;
+}
+
+/* Loading State */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid var(--primary-color);
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

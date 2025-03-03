@@ -1,0 +1,217 @@
+/* Liked Songs Page Styles */
+:root {
+  --liked-songs-bg: #121212;
+  --liked-songs-text: #ffffff;
+  --liked-songs-secondary-text: #b3b3b3;
+  --liked-songs-accent: #1db954;
+  --liked-songs-card-bg: #181818;
+  --liked-songs-hover-bg: #282828;
+  --liked-songs-empty-bg: rgba(255, 255, 255, 0.05);
+}
+
+.liked-songs-container {
+  padding: 2rem 1rem;
+  color: var(--liked-songs-text);
+  background-color: var(--liked-songs-bg);
+  min-height: 100vh;
+}
+
+.liked-songs-header {
+  margin-bottom: 2rem;
+}
+
+.liked-songs-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--liked-songs-text);
+}
+
+.liked-songs-subtitle {
+  font-size: 1rem;
+  color: var(--liked-songs-secondary-text);
+  margin-bottom: 1.5rem;
+}
+
+/* Empty state styling */
+.liked-songs-empty {
+  background-color: var(--liked-songs-empty-bg);
+  border-radius: 8px;
+  padding: 3rem 2rem;
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.liked-songs-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--liked-songs-secondary-text);
+}
+
+.liked-songs-empty-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.liked-songs-empty-message {
+  color: var(--liked-songs-secondary-text);
+  margin-bottom: 1.5rem;
+}
+
+.liked-songs-empty-button {
+  background-color: var(--liked-songs-accent);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.liked-songs-empty-button:hover {
+  background-color: #1ed760;
+  transform: scale(1.05);
+}
+
+/* Recommendations section */
+.recommendations-section {
+  margin-top: 3rem;
+}
+
+.recommendations-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.recommendation-card {
+  background-color: var(--liked-songs-card-bg);
+  border-radius: 6px;
+  padding: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.recommendation-card:hover {
+  background-color: var(--liked-songs-hover-bg);
+}
+
+.recommendation-image {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.recommendation-title {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recommendation-artist {
+  font-size: 0.875rem;
+  color: var(--liked-songs-secondary-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recommendation-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+
+.recommendation-play-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--liked-songs-accent);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.recommendation-play-button:hover {
+  transform: scale(1.1);
+  background-color: #1ed760;
+}
+
+.recommendation-like-button {
+  background: transparent;
+  border: none;
+  color: var(--liked-songs-secondary-text);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.recommendation-like-button:hover {
+  color: var(--liked-songs-accent);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .liked-songs-container {
+    padding: 1.5rem 0.75rem;
+  }
+  
+  .liked-songs-title {
+    font-size: 1.75rem;
+  }
+  
+  .recommendations-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  
+  .liked-songs-empty {
+    padding: 2rem 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .liked-songs-container {
+    padding: 1rem 0.5rem;
+  }
+  
+  .liked-songs-title {
+    font-size: 1.5rem;
+  }
+  
+  .recommendations-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .liked-songs-empty-icon {
+    font-size: 2.5rem;
+  }
+  
+  .liked-songs-empty-title {
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .liked-songs-container {
+    padding: 2.5rem 2rem;
+  }
+  
+  .recommendations-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+}
