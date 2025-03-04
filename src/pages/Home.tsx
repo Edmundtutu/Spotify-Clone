@@ -11,9 +11,9 @@ const Home = () => {
     { id: 5, title: "Jelengesa", artist: "Navio", url: "" }
   ];
  
-  const handleSearch = e => {
+  function handleSearch(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-  };
+  }
 
   const [searchQuery, setSearchQuery] = useState("");
 
