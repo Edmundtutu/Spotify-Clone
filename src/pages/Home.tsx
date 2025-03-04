@@ -19,16 +19,16 @@ const Home = () => {
 
   return (
     <div className="home">
-      <div className="search-container">
-        <form onSubmit={handleSearch} className="search-form">
+      <div className="lookup-container">
+        <form onSubmit={handleSearch} className="lookup-form">
           <input
             type="text"
             placeholder="What do you want to listen to today?"
-            className="search-input"
+            className="lookup-input"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
           />
-          <button type="submit" className="search-button">
+          <button type="submit" className="lookup-button">
             Search
           </button>
         </form>
@@ -37,16 +37,18 @@ const Home = () => {
       <h2 className="tracks-heading">Recommended Tracks</h2>
       
       <div className="tracks-container">
-        {tracks.map(
-          track =>
-            track.title.toLowerCase().startsWith(searchQuery) &&
-            <TrackCard
-              title={track.title}
-              url={track.url || "/default-album-cover.jpg"}
-              artist={track.artist}
-              key={track.id}
-            />
-        )}
+        <div className="tracks-grid">
+          {tracks.map(
+            track =>
+              track.title.toLowerCase().startsWith(searchQuery) &&
+              <TrackCard
+                title={track.title}
+                url={track.url || "/default-album-cover.jpg"}
+                artist={track.artist}
+                key={track.id}
+              />
+          )}
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,16 @@
-# React + TypeScript + Vite
+# Spotify Clone - React + TypeScript + Vite
+
+This project is a Spotify clone built with React, TypeScript, and Vite, providing a responsive and interactive music streaming interface.
+
+## Features
+
+### Navigation Bar
+- **Fixed Position**: The navbar is fixed at the top of the viewport with proper content offset to ensure the main content is always visible
+- **Responsive Design**: Fully responsive with a mobile-friendly toggle menu that appears on smaller screens
+- **Search Functionality**: Integrated search input with custom styling that matches Spotify's design language
+- **Smooth Transitions**: All interactive elements have smooth transitions for a polished user experience
+
+## Development Setup
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
@@ -52,3 +64,31 @@ export default tseslint.config({
   },
 })
 ```
+
+## Component Documentation
+
+### NavBar Component
+
+The navigation bar has been designed with the following features:
+
+1. **Fixed Positioning**:
+   - The navbar stays fixed at the top of the viewport
+   - Main content is automatically offset to prevent overlap with the navbar
+   - Implemented with useEffect to dynamically calculate and apply the correct margin
+
+2. **Responsive Design**:
+   - Adapts to different screen sizes with media queries
+   - On mobile devices, navigation links collapse into a toggle menu
+   - Custom hamburger button animation for toggle state indication
+
+3. **Search Functionality**:
+   - Integrated search input with Spotify-inspired styling
+   - Focus states with color transitions
+   - Responsive sizing that adjusts based on viewport width
+
+4. **Accessibility**:
+   - Proper contrast ratios for text visibility
+   - Interactive elements have appropriate hover and focus states
+   - Semantic HTML structure for better screen reader support
+
+These enhancements improve user experience across all devices while maintaining the Spotify design aesthetic.
