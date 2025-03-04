@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
 import "../css/navbar.css";
 const NavBar = () => {
-    const toggleNav = () => {
-        const navBar = document.querySelector(".navBar");
-        navBar?.classList.toggle("navBar-open");
-    };
+  const toggleNav = () => {
+    const navBar = document.querySelector(".navBar");
+    const navToggle = document.querySelector(".navBar-toggle");
+    navBar?.classList.toggle("navBar-open");
+    navToggle?.classList.toggle("toggle-active");
+  };
+
   return (
     <div className="navBar">
       <div className="navBar-brand">
@@ -24,11 +27,11 @@ const NavBar = () => {
           Test List 
         </Link>
       </div>
-    <button className="navBar-toggle" onClick={toggleNav}>
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-    </button>
+      <button className="navBar-toggle" onClick={toggleNav}>
+        <span>.</span>
+        <span>.</span>
+        <span>.</span>
+      </button>
     </div>
   );
 };

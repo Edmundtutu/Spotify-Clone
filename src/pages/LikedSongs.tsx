@@ -34,7 +34,6 @@ const LikedSongs = () => {
                 url={track.url}
                 artist={track.artist}
                 key={track.id}
-                isRecommendation={true}
               />
             )}
         </div>
