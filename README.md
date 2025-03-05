@@ -1,5 +1,5 @@
 
-![Spotify Clone Logo](https://drive.google.com/uc?id=1OpuTGO0jYKFyoMcBOH9KXcyrV6Utd_te)
+![Spotify Clone Logo](https://iamedmundtutuma.vercel.app/assets/images/yospotify.svg)
 
 ## Overview
 
