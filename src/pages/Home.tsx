@@ -2,7 +2,7 @@ import TrackCard from "../components/TrackCard";
 import { useState, useEffect } from "react";
 import "../css/home.css";
 import { getPopularTracks, searchTrack } from "../services/api";
-import { Track } from "../services/api";
+import { Track } from "../services/api.ts";
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,11 +23,11 @@ const Home = () => {
       setError(null);
       
       searchTrack(searchQuery)
-        .then(results => {
+        .then((results: Track[]) => {
           setTracks(results);
           setloading(false);
         })
-        .catch(err => {
+        .catch((err: Error) => {
           console.error(err);
           setError("Failed to search tracks. Please try again.");
           setloading(false);
