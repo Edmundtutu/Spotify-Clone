@@ -1,21 +1,56 @@
 import TrackCard from "../components/TrackCard";
-import { useState } from "react";
-import '../css/home.css';
+import { useState, useEffect } from "react";
+import "../css/home.css";
+import { getPopularTracks, searchTrack } from "../services/api";
+import { Track } from "../services/api";
 
 const Home = () => {
-  const tracks = [
-    { id: 1, title: "Do do", artist: "Jp Cooper", url: "" },
-    { id: 2, title: "Ca boom", artist: "Cat Burns", url: "" },
-    { id: 3, title: "Ndi wuwo", artist: "Elihja Kitaka", url: "" },
-    { id: 4, title: "Lofit", artist: "Azawi", url: "" },
-    { id: 5, title: "Jelengesa", artist: "Navio", url: "" }
-  ];
- 
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const [tracks, setTracks] = useState<Track[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setloading] = useState(true);
+
+  useEffect(() => {
+    loadPopularTracks();
+  }, []);
+
   function handleSearch(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    
+    if (searchQuery.trim()) {
+      setloading(true);
+      setError(null);
+      
+      searchTrack(searchQuery)
+        .then(results => {
+          setTracks(results);
+          setloading(false);
+        })
+        .catch(err => {
+          console.error(err);
+          setError("Failed to search tracks. Please try again.");
+          setloading(false);
+        });
+    } else {
+      // If search query is empty, load popular tracks again
+      loadPopularTracks();
+    }
   }
-
-  const [searchQuery, setSearchQuery] = useState("");
+  
+  const loadPopularTracks = async () => {
+    try {
+      setloading(true);
+      setError(null);
+      const loadedTracks = await getPopularTracks();
+      setTracks(loadedTracks);
+    } catch (err) {
+      console.error(err);
+      setError("An error occurred. Please try again later");
+    } finally {
+      setloading(false);
+    }
+  };
 
   return (
     <div className="home">
@@ -35,20 +70,28 @@ const Home = () => {
       </div>
 
       <h2 className="tracks-heading">Recommended Tracks</h2>
-      
+
       <div className="tracks-container">
-        <div className="tracks-grid">
-          {tracks.map(
-            track =>
-              track.title.toLowerCase().startsWith(searchQuery) &&
+        {loading ? (
+          <p>Loading tracks...</p>
+        ) : error ? (
+          <p className="error-message">{error}</p>
+        ) : (
+          <div className="tracks-grid">
+            {tracks.map(track => (
               <TrackCard
-                title={track.title}
-                url={track.url || "/default-album-cover.jpg"}
-                artist={track.artist}
+                title={track.name}
+                url={track.album.images && track.album.images.length > 0 
+                  ? track.album.images[0].url 
+                  : "/default-album-cover.jpg"}
+                artist={track.artists && track.artists.length > 0 
+                  ? track.artists[0].name 
+                  : "Unknown Artist"}
                 key={track.id}
               />
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
