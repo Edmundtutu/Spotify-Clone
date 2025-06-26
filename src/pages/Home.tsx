@@ -1,98 +1,182 @@
-import TrackCard from "../components/TrackCard";
-import { useState, useEffect } from "react";
-import "../css/home.css";
-import { getPopularTracks, searchTrack } from "../services/api";
-import { Track } from "../services/api.ts";
+import React, { useState, useEffect } from 'react';
+import TrackCard from '../components/TrackCard';
+import PlaylistCard from '../components/PlaylistCard';
+import AlbumCard from '../components/AlbumCard';
+import '../css/home.css';
+import { 
+  getPopularTracks, 
+  searchTrack, 
+  getFeaturedPlaylists, 
+  getNewReleases,
+  Track, 
+  Playlist, 
+  Album 
+} from '../services/api';
 
-const Home = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-
+const Home: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState('');
   const [tracks, setTracks] = useState<Track[]>([]);
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
+  const [newReleases, setNewReleases] = useState<Album[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setloading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [searchResults, setSearchResults] = useState<Track[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
-    loadPopularTracks();
+    loadHomeData();
   }, []);
 
-  function handleSearch(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    
-    if (searchQuery.trim()) {
-      setloading(true);
+  const loadHomeData = async () => {
+    try {
+      setLoading(true);
       setError(null);
       
-      searchTrack(searchQuery)
-        .then((results: Track[]) => {
-          setTracks(results);
-          setloading(false);
-        })
-        .catch((err: Error) => {
-          console.error(err);
-          setError("Failed to search tracks. Please try again.");
-          setloading(false);
-        });
-    } else {
-      // If search query is empty, load popular tracks again
-      loadPopularTracks();
-    }
-  }
-  
-  const loadPopularTracks = async () => {
-    try {
-      setloading(true);
-      setError(null);
-      const loadedTracks = await getPopularTracks();
-      setTracks(loadedTracks);
+      const [popularTracks, featuredPlaylists, albums] = await Promise.all([
+        getPopularTracks(),
+        getFeaturedPlaylists(),
+        getNewReleases()
+      ]);
+      
+      setTracks(popularTracks);
+      setPlaylists(featuredPlaylists);
+      setNewReleases(albums);
     } catch (err) {
-      console.error(err);
-      setError("An error occurred. Please try again later");
+      console.error('Error loading home data:', err);
+      setError('Failed to load content. Please try again later.');
     } finally {
-      setloading(false);
+      setLoading(false);
     }
   };
 
+  const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    if (searchQuery.trim()) {
+      setIsSearching(true);
+      setError(null);
+      
+      try {
+        const results = await searchTrack(searchQuery);
+        setSearchResults(results);
+      } catch (err) {
+        console.error('Search error:', err);
+        setError('Failed to search tracks. Please try again.');
+        setSearchResults([]);
+      } finally {
+        setIsSearching(false);
+      }
+    } else {
+      setSearchResults([]);
+    }
+  };
+
+  const clearSearch = () => {
+    setSearchQuery('');
+    setSearchResults([]);
+  };
+
+  if (loading) {
+    return (
+      <div className="home-loading">
+        <div className="loading-spinner"></div>
+        <p>Loading your music...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="home">
-      <div className="lookup-container">
-        <form onSubmit={handleSearch} className="lookup-form">
-          <input
-            type="text"
-            placeholder="What do you want to listen to today?"
-            className="lookup-input"
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-          />
-          <button type="submit" className="lookup-button">
-            Search
+      <div className="search-section">
+        <form onSubmit={handleSearch} className="search-form">
+          <div className="search-input-container">
+            <input
+              type="text"
+              placeholder="What do you want to listen to?"
+              className="search-input"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            {searchQuery && (
+              <button 
+                type="button" 
+                className="search-clear-button"
+                onClick={clearSearch}
+                aria-label="Clear search"
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                </svg>
+              </button>
+            )}
+          </div>
+          <button type="submit" className="search-button" disabled={isSearching}>
+            {isSearching ? 'Searching...' : 'Search'}
           </button>
         </form>
       </div>
 
-      <h2 className="tracks-heading">Recommended Tracks</h2>
+      {error && (
+        <div className="error-message">
+          <p>{error}</p>
+          <button onClick={loadHomeData} className="retry-button">
+            Try Again
+          </button>
+        </div>
+      )}
 
-      <div className="tracks-container">
-        {loading ? (
-          <p>Loading tracks...</p>
-        ) : error ? (
-          <p className="error-message">{error}</p>
-        ) : (
+      {searchResults.length > 0 ? (
+        <section className="search-results-section">
+          <div className="section-header">
+            <h2 className="section-title">Search Results</h2>
+            <button onClick={clearSearch} className="clear-search-button">
+              Clear
+            </button>
+          </div>
           <div className="tracks-grid">
-            {tracks.map(track => (
-              <TrackCard
-                title={track.name}
-                url={track.album.images && track.album.images.length > 0 
-                  ? track.album.images[0].url 
-                  : "/default-album-cover.jpg"}
-                artist={track.artists && track.artists.length > 0 
-                  ? track.artists[0].name 
-                  : "Unknown Artist"}
-                key={track.id}
+            {searchResults.map((track) => (
+              <TrackCard 
+                key={track.id} 
+                track={track} 
+                playlist={searchResults}
               />
             ))}
           </div>
-        )}
-      </div>
+        </section>
+      ) : (
+        <>
+          <section className="popular-tracks-section">
+            <h2 className="section-title">Popular Right Now</h2>
+            <div className="tracks-grid">
+              {tracks.map((track) => (
+                <TrackCard 
+                  key={track.id} 
+                  track={track} 
+                  playlist={tracks}
+                />
+              ))}
+            </div>
+          </section>
+
+          <section className="featured-playlists-section">
+            <h2 className="section-title">Featured Playlists</h2>
+            <div className="playlists-grid">
+              {playlists.map((playlist) => (
+                <PlaylistCard key={playlist.id} playlist={playlist} />
+              ))}
+            </div>
+          </section>
+
+          <section className="new-releases-section">
+            <h2 className="section-title">New Releases</h2>
+            <div className="albums-grid">
+              {newReleases.map((album) => (
+                <AlbumCard key={album.id} album={album} />
+              ))}
+            </div>
+          </section>
+        </>
+      )}
     </div>
   );
 };
