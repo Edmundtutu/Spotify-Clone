@@ -80,7 +80,7 @@ const Home: React.FC = () => {
     return (
       <div className="home-loading">
         <div className="loading-spinner"></div>
-        <p>Loading your music...</p>
+        <p className="text-lg text-secondary">Loading your music...</p>
       </div>
     );
   }
@@ -110,9 +110,26 @@ const Home: React.FC = () => {
               </button>
             )}
           </div>
-          <button type="submit" className="search-button" disabled={isSearching}>
-            {isSearching ? 'Searching...' : 'Search'}
-          </button>
+          <div className="search-button-container">
+            <button type="submit" className="search-button" disabled={isSearching}>
+              {isSearching ? (
+                <>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style={{ marginRight: '8px', animation: 'spin 1s linear infinite' }}>
+                    <path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+                    <path d="M8 4a4 4 0 0 1 4 4H8V4z"/>
+                  </svg>
+                  Searching...
+                </>
+              ) : (
+                <>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style={{ marginRight: '8px' }}>
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                  </svg>
+                  Search
+                </>
+              )}
+            </button>
+          </div>
         </form>
       </div>
 
@@ -130,7 +147,7 @@ const Home: React.FC = () => {
           <div className="section-header">
             <h2 className="section-title">Search Results</h2>
             <button onClick={clearSearch} className="clear-search-button">
-              Clear
+              Clear Results
             </button>
           </div>
           <div className="tracks-grid">
