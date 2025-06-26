@@ -1,4 +1,3 @@
-import React from 'react';
 import '../css/track-list.css';
 import { Track, formatDuration, getImageUrl } from '../services/api';
 import { useMusicContext } from '../context/MusicContext';
