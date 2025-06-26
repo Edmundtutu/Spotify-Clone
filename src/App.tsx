@@ -1,4 +1,3 @@
-import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { MusicProvider } from './context/MusicContext';
 import Home from './pages/Home';

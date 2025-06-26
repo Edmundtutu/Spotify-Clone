@@ -14,7 +14,7 @@ const TrackList: React.FC<TrackListProps> = ({ tracks, showAlbum = true, showInd
   const { playTrack, currentTrack, isPlaying } = useMusicContext();
   const { isLiked, toggleLike } = useLikedSongs();
 
-  const handleTrackClick = (track: Track, index: number) => {
+  const handleTrackClick = (track: Track) => {
     playTrack(track, tracks);
   };
 
@@ -47,7 +47,7 @@ const TrackList: React.FC<TrackListProps> = ({ tracks, showAlbum = true, showInd
             <div 
               key={track.id} 
               className={`track-list-item ${isCurrentTrack ? 'active' : ''}`}
-              onClick={() => handleTrackClick(track, index)}
+              onClick={() => handleTrackClick(track)}
             >
               {showIndex && (
                 <div className="track-list-item-index">
