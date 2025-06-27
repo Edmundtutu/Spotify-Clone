@@ -41,6 +41,14 @@
   transform: translateY(-1px);
 }
 
+.search-input-container:focus-within .search-input {
+  color: var(--text-primary);
+}
+
+.search-input-container:focus-within .search-input::placeholder {
+  color: var(--text-secondary);
+}
+
 .search-input {
   flex: 1;
   background: transparent;
@@ -50,6 +58,13 @@
   padding: var(--spacing-md) var(--spacing-lg);
   outline: none;
   font-weight: 400;
+  box-shadow: none;
+}
+
+.search-input:focus {
+  outline: none;
+  box-shadow: none;
+  color: var(--text-primary);
 }
 
 .search-input::placeholder {

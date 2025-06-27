@@ -28,25 +28,33 @@ const Home: React.FC = () => {
   }, []);
 
   const loadHomeData = async () => {
+    setLoading(true);
+    setError(null);
+    let popularTracks: Track[] = [];
+    let featuredPlaylists: Playlist[] = [];
+    let albums: Album[] = [];
     try {
-      setLoading(true);
-      setError(null);
-      
-      const [popularTracks, featuredPlaylists, albums] = await Promise.all([
-        getPopularTracks(),
-        getFeaturedPlaylists(),
-        getNewReleases()
-      ]);
-      
-      setTracks(popularTracks);
-      setPlaylists(featuredPlaylists);
-      setNewReleases(albums);
+      popularTracks = await getPopularTracks();
     } catch (err) {
-      console.error('Error loading home data:', err);
-      setError('Failed to load content. Please try again later.');
-    } finally {
-      setLoading(false);
+      console.error('Error loading popular tracks:', err);
     }
+    try {
+      featuredPlaylists = await getFeaturedPlaylists();
+    } catch (err) {
+      console.error('Error loading featured playlists:', err);
+    }
+    try {
+      albums = await getNewReleases();
+    } catch (err) {
+      console.error('Error loading new releases:', err);
+    }
+    setTracks(popularTracks);
+    setPlaylists(featuredPlaylists);
+    setNewReleases(albums);
+    if (popularTracks.length === 0 && featuredPlaylists.length === 0 && albums.length === 0) {
+      setError('Failed to load content. Please try again later.');
+    }
+    setLoading(false);
   };
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -72,7 +80,7 @@ const Home: React.FC = () => {
   };
 
   const clearSearch = () => {
-    setSearchQuery('');
+    setSearchQuery(''); 
     setSearchResults([]);
   };
 
@@ -177,11 +185,18 @@ const Home: React.FC = () => {
 
           <section className="featured-playlists-section">
             <h2 className="section-title">Featured Playlists</h2>
-            <div className="playlists-grid">
-              {playlists.map((playlist) => (
-                <PlaylistCard key={playlist.id} playlist={playlist} />
-              ))}
-            </div>
+            {playlists.length > 0 ? (
+              <div className="playlists-grid">
+                {playlists.map((playlist) => (
+                  <PlaylistCard key={playlist.id} playlist={playlist} />
+                ))}
+              </div>
+            ) : (
+              <div className="empty-section">
+                <p className="empty-message">No popular playlists available at the moment.</p>
+                <p className="empty-subtitle">Check back later for new featured playlists!</p>
+              </div>
+            )}
           </section>
 
           <section className="new-releases-section">

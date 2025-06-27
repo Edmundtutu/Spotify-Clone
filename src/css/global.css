@@ -341,11 +341,25 @@ button {
 
 /* Focus styles for accessibility */
 button:focus-visible,
-input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
+}
+
+/* Exclude search inputs and specific elements from global focus styles */
+input:not([type="search"]):not(.search-input):not([class*="search"]):focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Ensure search inputs never get unwanted outlines */
+.search-input:focus,
+.search-input:focus-visible,
+input[type="search"]:focus,
+input[type="search"]:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* Loading animations */

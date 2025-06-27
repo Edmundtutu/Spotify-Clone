@@ -151,7 +151,7 @@ export const getPopularTracks = async (): Promise<Track[]> => {
 
   const accessToken = await getAccessToken();
 
-  const response = await fetch(`${baseUrl}/tracks?market=US&ids=${trackIds.join(',')}`, {
+  const response = await fetch(`${baseUrl}/tracks?market=ES&ids=${trackIds.join(',')}`, {
     headers: {
       'Authorization': `Bearer ${accessToken}`
     }
@@ -168,7 +168,7 @@ export const getPopularTracks = async (): Promise<Track[]> => {
 export const searchTrack = async (query: string): Promise<Track[]> => {
   const accessToken = await getAccessToken();
 
-  const response = await fetch(`${baseUrl}/search?q=${encodeURIComponent(query)}&type=track&market=US&limit=20`, {
+  const response = await fetch(`${baseUrl}/search?q=${encodeURIComponent(query)}&type=track&market=ES&limit=20`, {
     headers: {
       'Authorization': `Bearer ${accessToken}`
     }
@@ -183,26 +183,36 @@ export const searchTrack = async (query: string): Promise<Track[]> => {
 };
 
 export const getFeaturedPlaylists = async (): Promise<Playlist[]> => {
-  const accessToken = await getAccessToken();
-
-  const response = await fetch(`${baseUrl}/browse/featured-playlists?market=US&limit=10`, {
-    headers: {
-      'Authorization': `Bearer ${accessToken}`
+  try {
+    const accessToken = await getAccessToken();
+    const response = await fetch(`https://api.spotify.com/v1/browse/featured-playlists?country=ES&limit=10`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return data.playlists.items;
+    } else if (response.status === 404) {
+      // Gracefully handle 404 (Spotify temporary issue)
+      console.warn('Featured playlists endpoint returned 404 - Spotify temporary issue');
+      return [];
+    } else {
+      console.error('Featured playlists API error:', response.status, response.statusText);
+      const errorText = await response.text();
+      console.error('Error response body:', errorText);
+      return [];
     }
-  });
-
-  if (response.ok) {
-    const data = await response.json();
-    return data.playlists.items;
-  } else {
-    throw new Error('Failed to fetch featured playlists');
+  } catch (error) {
+    console.error('Featured playlists fetch error:', error);
+    return [];
   }
 };
 
 export const getNewReleases = async (): Promise<Album[]> => {
   const accessToken = await getAccessToken();
 
-  const response = await fetch(`${baseUrl}/browse/new-releases?market=US&limit=10`, {
+  const response = await fetch(`${baseUrl}/browse/new-releases?market=ES&limit=10`, {
     headers: {
       'Authorization': `Bearer ${accessToken}`
     }
@@ -223,7 +233,7 @@ export const getRecommendations = async (seedTracks?: string[]): Promise<Track[]
   const defaultSeeds = ['7ouMYWpwJ422jRcDASZB7P', '4VqPOruhp5EdPBeR92t6lQ', '2takcwOaAZWiXQijPHIx7B'];
   const seeds = seedTracks || defaultSeeds;
   
-  const response = await fetch(`${baseUrl}/recommendations?seed_tracks=${seeds.slice(0, 5).join(',')}&market=US&limit=20`, {
+  const response = await fetch(`${baseUrl}/recommendations?seed_tracks=${seeds.slice(0, 5).join(',')}&market=ES&limit=20`, {
     headers: {
       'Authorization': `Bearer ${accessToken}`
     }
@@ -233,7 +243,10 @@ export const getRecommendations = async (seedTracks?: string[]): Promise<Track[]
     const data = await response.json();
     return data.tracks;
   } else {
-    throw new Error('Failed to fetch recommendations');
+    console.error('Recommendations API error:', response.status, response.statusText);
+    const errorText = await response.text();
+    console.error('Error response body:', errorText);
+    throw new Error(`Failed to fetch recommendations: ${response.status} ${response.statusText}`);
   }
 };
 
