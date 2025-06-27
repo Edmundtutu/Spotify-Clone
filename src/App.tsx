@@ -4,9 +4,22 @@ import Home from './pages/Home';
 import LikedSongs from './pages/LikedSongs';
 import NavBar from './components/NavBar';
 import MusicPlayer from './components/MusicPlayer';
+import PWAUpdatePrompt from './components/PWAUpdatePrompt';
 import './css/global.css';
 
 function App() {
+  const handlePWAUpdate = () => {
+    window.location.reload();
+  };
+
+  const handlePWASkip = () => {
+    // Hide the update prompt
+    const prompt = document.querySelector('.pwa-update-prompt');
+    if (prompt) {
+      prompt.remove();
+    }
+  };
+
   return (
     <MusicProvider>
       <div className="app">
@@ -18,6 +31,7 @@ function App() {
           </Routes>
         </main>
         <MusicPlayer />
+        <PWAUpdatePrompt onUpdate={handlePWAUpdate} onSkip={handlePWASkip} />
       </div>
     </MusicProvider>
   );
